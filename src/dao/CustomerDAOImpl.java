@@ -17,7 +17,7 @@ public class CustomerDAOImpl {
         Connection connection = DBConnection.getDbConnection().getConnection();
         Statement stm = connection.createStatement();
         ResultSet rst = stm.executeQuery("SELECT * FROM Customer");
-
+        System.out.println();
         while (rst.next()) {
             CustomerDTO customerDTO = new CustomerDTO(rst.getString("id"), rst.getString("name"), rst.getString("address"));
             allCustomers.add(customerDTO);
