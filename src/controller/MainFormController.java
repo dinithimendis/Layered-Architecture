@@ -128,6 +128,10 @@ public class MainFormController {
                     break;
             }
 
+            System.out.println();
+            System.out.println();
+            System.out.println();
+
             if (root != null) {
                 Scene subScene = new Scene(root);
                 Stage primaryStage = (Stage) this.root.getScene().getWindow();
