@@ -2,9 +2,7 @@ package controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import dao.CustomerDAOImpl;
 import dao.ItemDAOImpl;
-import db.DBConnection;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,15 +15,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import model.CustomerDTO;
 import model.ItemDTO;
-import view.tdm.CustomerTM;
 import view.tdm.ItemTM;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.sql.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -44,7 +40,8 @@ public class ManageItemsFormController {
     public JFXTextField txtUnitPrice;
     public JFXButton btnAddNewItem;
 
-    public void initialize() {
+    ItemDAOImpl itemDAO = new ItemDAOImpl();
+    public void initialize() throws SQLException, ClassNotFoundException {
         tblItems.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("code"));
         tblItems.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("description"));
         tblItems.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("qtyOnHand"));
@@ -74,27 +71,27 @@ public class ManageItemsFormController {
         loadAllItems();
     }
 
-    public void loadAllItems() {
+    public void loadAllItems() throws SQLException, ClassNotFoundException {
         tblItems.getItems().clear();
-        try {
-            /*Get all items*/
-            /*Connection connection = DBConnection.getDbConnection().getConnection();
+       /* try {
+            //Get all items
+            Connection connection = DBConnection.getDbConnection().getConnection();
             Statement stm = connection.createStatement();
             ResultSet rst = stm.executeQuery("SELECT * FROM Item");
             while (rst.next()) {
                 tblItems.getItems().add(new ItemTM(rst.getString("code"), rst.getString("description"), rst.getBigDecimal("unitPrice"), rst.getInt("qtyOnHand")));
-            }*/
-
-            ItemDAOImpl itemDAO = new ItemDAOImpl();
-            ArrayList<ItemDTO> allItems = itemDAO.loadAllItems();
-            for (ItemDTO i : allItems) {
-                tblItems.getItems().add(new ItemTM(i.getCode(), i.getDescription(), i.getUnitPrice(), i.getQtyOnHand()));
             }
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }*/
+       // ItemDAOImpl itemDAO = new ItemDAOImpl();
+        ArrayList<ItemDTO> allItems = itemDAO.loadAllItems();
+        for (ItemDTO i : allItems) {
+            tblItems.getItems().add(new ItemTM(i.getCode(), i.getDescription(), i.getUnitPrice(), i.getQtyOnHand()));
         }
+
     }
 
     private void initUI() {
@@ -150,7 +147,7 @@ public class ManageItemsFormController {
             pstm.setString(1, code);
             pstm.executeUpdate(); */
 
-            ItemDAOImpl itemDAO = new ItemDAOImpl();
+           // ItemDAOImpl itemDAO = new ItemDAOImpl();
             itemDAO.deleteItems(code);
 
             tblItems.getItems().remove(tblItems.getSelectionModel().getSelectedItem());
@@ -200,9 +197,9 @@ public class ManageItemsFormController {
                 pstm.executeUpdate();
                 tblItems.getItems().add(new ItemTM(code, description, unitPrice, qtyOnHand)); */
 
-                ItemDAOImpl itemDAO = new ItemDAOImpl();
+               // ItemDAOImpl itemDAO = new ItemDAOImpl();
                 itemDAO.saveItems(new ItemDTO(code, description, unitPrice, qtyOnHand));
-
+                loadAllItems();
             } catch (SQLException e) {
                 new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             } catch (ClassNotFoundException e) {
@@ -223,7 +220,7 @@ public class ManageItemsFormController {
                 pstm.setString(4, code);
                 pstm.executeUpdate(); */
 
-                ItemDAOImpl itemDAO = new ItemDAOImpl();
+               // ItemDAOImpl itemDAO = new ItemDAOImpl();
                 itemDAO.updateItems(new ItemDTO(code, description, unitPrice, qtyOnHand));
 
                 ItemTM selectedItem = tblItems.getSelectionModel().getSelectedItem();
@@ -248,7 +245,7 @@ public class ManageItemsFormController {
         pstm.setString(1, code);
         return pstm.executeQuery().next();*/
 
-        ItemDAOImpl itemDAO = new ItemDAOImpl();
+        //ItemDAOImpl itemDAO = new ItemDAOImpl();
         return itemDAO.existItems(code);
     }
 
@@ -265,7 +262,7 @@ public class ManageItemsFormController {
                 return "I00-001";
             }*/
 
-            ItemDAOImpl itemDAO = new ItemDAOImpl();
+           // ItemDAOImpl itemDAO = new ItemDAOImpl();
             return itemDAO.generateNewId();
 
         } catch (SQLException e) {
