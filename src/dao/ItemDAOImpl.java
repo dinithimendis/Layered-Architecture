@@ -8,7 +8,7 @@ import view.tdm.ItemTM;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class ItemDAOImpl {
+public class ItemDAOImpl implements ItemDAO{
     public ArrayList<ItemDTO> loadAllItems() throws SQLException, ClassNotFoundException {
         ArrayList<ItemDTO> allItems= new ArrayList<>();
         Connection connection = DBConnection.getDbConnection().getConnection();
