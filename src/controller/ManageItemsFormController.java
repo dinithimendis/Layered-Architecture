@@ -2,7 +2,7 @@ package controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import dao.ItemDAO;
+import dao.CrudDAO;
 import dao.ItemDAOImpl;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -41,7 +41,7 @@ public class ManageItemsFormController {
     public JFXTextField txtUnitPrice;
     public JFXButton btnAddNewItem;
 
-    ItemDAO itemDAO = new ItemDAOImpl();
+    CrudDAO itemDAO = new ItemDAOImpl();
     public void initialize() throws SQLException, ClassNotFoundException {
         tblItems.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("code"));
         tblItems.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -88,7 +88,7 @@ public class ManageItemsFormController {
             e.printStackTrace();
         }*/
        // ItemDAOImpl itemDAO = new ItemDAOImpl();
-        ArrayList<ItemDTO> allItems = itemDAO.loadAllItems();
+        ArrayList<ItemDTO> allItems = itemDAO.getAll();
         for (ItemDTO i : allItems) {
             tblItems.getItems().add(new ItemTM(i.getCode(), i.getDescription(), i.getUnitPrice(), i.getQtyOnHand()));
         }
@@ -140,7 +140,7 @@ public class ManageItemsFormController {
         /*Delete Item*/
         String code = tblItems.getSelectionModel().getSelectedItem().getCode();
         try {
-            if (!existItem(code)) {
+            if (!exist(code)) {
                 new Alert(Alert.AlertType.ERROR, "There is no such item associated with the id " + code).show();
             }
            /* Connection connection = DBConnection.getDbConnection().getConnection();
@@ -149,7 +149,7 @@ public class ManageItemsFormController {
             pstm.executeUpdate(); */
 
            // ItemDAOImpl itemDAO = new ItemDAOImpl();
-            itemDAO.deleteItems(code);
+            itemDAO.delete(code);
 
             tblItems.getItems().remove(tblItems.getSelectionModel().getSelectedItem());
             tblItems.getSelectionModel().clearSelection();
@@ -185,7 +185,7 @@ public class ManageItemsFormController {
 
         if (btnSave.getText().equalsIgnoreCase("save")) {
             try {
-                if (existItem(code)) {
+                if (exist(code)) {
                     new Alert(Alert.AlertType.ERROR, code + " already exists").show();
                 }
                 //Save Item
@@ -199,7 +199,7 @@ public class ManageItemsFormController {
                 tblItems.getItems().add(new ItemTM(code, description, unitPrice, qtyOnHand)); */
 
                // ItemDAOImpl itemDAO = new ItemDAOImpl();
-                itemDAO.saveItems(new ItemDTO(code, description, unitPrice, qtyOnHand));
+                itemDAO.save(new ItemDTO(code, description, unitPrice, qtyOnHand));
                 loadAllItems();
             } catch (SQLException e) {
                 new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
@@ -209,7 +209,7 @@ public class ManageItemsFormController {
         } else {
             try {
 
-                if (!existItem(code)) {
+                if (!exist(code)) {
                     new Alert(Alert.AlertType.ERROR, "There is no such item associated with the id " + code).show();
                 }
                 /*Update Item*/
@@ -222,7 +222,7 @@ public class ManageItemsFormController {
                 pstm.executeUpdate(); */
 
                // ItemDAOImpl itemDAO = new ItemDAOImpl();
-                itemDAO.updateItems(new ItemDTO(code, description, unitPrice, qtyOnHand));
+                itemDAO.update(new ItemDTO(code, description, unitPrice, qtyOnHand));
 
                 ItemTM selectedItem = tblItems.getSelectionModel().getSelectedItem();
                 selectedItem.setDescription(description);
@@ -240,14 +240,14 @@ public class ManageItemsFormController {
     }
 
 
-    private boolean existItem(String code) throws SQLException, ClassNotFoundException {
+    private boolean exist(String code) throws SQLException, ClassNotFoundException {
        /* Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("SELECT code FROM Item WHERE code=?");
         pstm.setString(1, code);
         return pstm.executeQuery().next();*/
 
         //ItemDAOImpl itemDAO = new ItemDAOImpl();
-        return itemDAO.existItems(code);
+        return itemDAO.exist(code);
     }
 
 
