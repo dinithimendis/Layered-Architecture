@@ -199,7 +199,7 @@ public class ManageItemsFormController {
                 tblItems.getItems().add(new ItemTM(code, description, unitPrice, qtyOnHand)); */
 
                // ItemDAOImpl itemDAO = new ItemDAOImpl();
-                itemDAO.save(new ItemDTO(code, description, unitPrice, qtyOnHand));
+                itemDAO.save(new ItemDTO(code, description, qtyOnHand, unitPrice));
                 loadAllItems();
             } catch (SQLException e) {
                 new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
@@ -222,7 +222,7 @@ public class ManageItemsFormController {
                 pstm.executeUpdate(); */
 
                // ItemDAOImpl itemDAO = new ItemDAOImpl();
-                itemDAO.update(new ItemDTO(code, description, unitPrice, qtyOnHand));
+                itemDAO.update(new ItemDTO(code, description, qtyOnHand, unitPrice));
 
                 ItemTM selectedItem = tblItems.getSelectionModel().getSelectedItem();
                 selectedItem.setDescription(description);
