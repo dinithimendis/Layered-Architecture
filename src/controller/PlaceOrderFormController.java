@@ -57,11 +57,11 @@ public class PlaceOrderFormController {
     public Label lblTotal;
     private String orderId;
 
-    CustomerDAO customerDAO = new CustomerDAOImpl();
+    /*CustomerDAO customerDAO = new CustomerDAOImpl();
     ItemDAO itemDAO = new ItemDAOImpl();
     OrderDAO orderDAO = new OrderDAOImpl();
     OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAOImpl();
-    QueryDAO queryDAO = new QueryDAOImpl();
+    QueryDAO queryDAO = new QueryDAOImpl();*/
     public void initialize() throws SQLException, ClassNotFoundException {
 
         tblOrderDetails.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("code"));
@@ -197,7 +197,7 @@ public class PlaceOrderFormController {
 
     public String generateNewOrderId() {
         try {
-           return orderDAO.generateNewId();
+            return orderDAO.generateNewId();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Failed to generate a new order id").show();
         } catch (ClassNotFoundException e) {
@@ -211,7 +211,6 @@ public class PlaceOrderFormController {
            /* Connection connection = DBConnection.getDbConnection().getConnection();
             Statement stm = connection.createStatement();
             ResultSet rst = stm.executeQuery("SELECT * FROM Customer");
-
             while (rst.next()) {
                 cmbCustomerId.getItems().add(rst.getString("id"));
             }*/
@@ -241,7 +240,7 @@ public class PlaceOrderFormController {
                 cmbItemCode.getItems().add(i.getCode());
             }
 
-            } catch (SQLException e) {
+        } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -333,15 +332,15 @@ public class PlaceOrderFormController {
     }
 
     public boolean saveOrder(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) {
-        /*Transaction*/
+       /* *//*Transaction*//*
 
         try {
             Connection connection = DBConnection.getDbConnection().getConnection();
             boolean b1 = orderDAO.exist(orderId);
-           /* connection = DBConnection.getDbConnection().getConnection();
+           *//* connection = DBConnection.getDbConnection().getConnection();
             PreparedStatement stm = connection.prepareStatement("SELECT oid FROM `Orders` WHERE oid=?");
-            stm.setString(1, orderId);*/
-            /*if order id already exist*/
+            stm.setString(1, orderId);*//*
+            *//*if order id already exist*//*
 
             if (b1) {
                 return false;
@@ -350,10 +349,10 @@ public class PlaceOrderFormController {
 
 
 
-            /*stm = connection.prepareStatement("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)");
+            *//*stm = connection.prepareStatement("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)");
             stm.setString(1, orderId);
             stm.setDate(2, Date.valueOf(orderDate));
-            stm.setString(3, customerId);*/
+            stm.setString(3, customerId);*//*
             boolean save = orderDAO.save(new OrderDTO(orderId, orderDate, customerId));
 
             if (!save) {
@@ -365,10 +364,10 @@ public class PlaceOrderFormController {
 //            stm = connection.prepareStatement("INSERT INTO OrderDetails (oid, itemCode, unitPrice, qty) VALUES (?,?,?,?)");
 
             for (OrderDetailDTO detail : orderDetails) {
-                /*stm.setString(1, orderId);
+                *//*stm.setString(1, orderId);
                 stm.setString(2, detail.getItemCode());
                 stm.setBigDecimal(3, detail.getUnitPrice());
-                stm.setInt(4, detail.getQty());*/
+                stm.setInt(4, detail.getQty());*//*
                 boolean save1 = orderDetailsDAO.save(detail);
 
                 if (!save1) {
@@ -380,14 +379,13 @@ public class PlaceOrderFormController {
 //                //Search & Update Item
                 ItemDTO item = findItem(detail.getItemCode());
                 item.setQtyOnHand(item.getQtyOnHand() - detail.getQty());
-/*
-
+*//*
                 PreparedStatement pstm = connection.prepareStatement("UPDATE Item SET description=?, unitPrice=?, qtyOnHand=? WHERE code=?");
                 pstm.setString(1, item.getDescription());
                 pstm.setBigDecimal(2, item.getUnitPrice());
                 pstm.setInt(3, item.getQtyOnHand());
                 pstm.setString(4, item.getCode());
-*/
+*//*
                 boolean update = itemDAO.update(new ItemDTO(item.getCode(), item.getDescription(), item.getQtyOnHand(), item.getUnitPrice()));
 
                 if (!update) {
@@ -408,7 +406,7 @@ public class PlaceOrderFormController {
         }
         return false;
     }
-
+*/
 
     public ItemDTO findItem(String code) {
         try {
