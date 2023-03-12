@@ -1,5 +1,6 @@
 package controller;
 
+import bo.CustomerBO;
 import bo.CustomerBOImpl;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
@@ -43,7 +44,7 @@ public class ManageCustomersFormController {
     public JFXButton btnAddNewCustomer;
 
 //    CustomerDAO customerDAO = new CustomerDAOImpl();
-      CustomerBOImpl customerBO = new CustomerBOImpl();
+      CustomerBO customerBO = new CustomerBOImpl();
 
     public void initialize() throws SQLException, ClassNotFoundException {
         tblCustomers.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));

@@ -1,5 +1,6 @@
 package controller;
 
+import bo.ItemBO;
 import bo.ItemBOImpl;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
@@ -43,7 +44,7 @@ public class ManageItemsFormController {
     public JFXButton btnAddNewItem;
 
 //    ItemDAO itemDAO = new ItemDAOImpl();
-    ItemBOImpl itemBO = new ItemBOImpl();
+    ItemBO itemBO = new ItemBOImpl();
 
     public void initialize() throws SQLException, ClassNotFoundException {
         tblItems.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("code"));
@@ -175,7 +176,7 @@ public class ManageItemsFormController {
                 }
                 //Save Item
                 //itemDAO.save(new ItemDTO(code, description, qtyOnHand, unitPrice));
-                itemBO.saveItems(new ItemDTO(code, description, qtyOnHand, unitPrice);
+                itemBO.saveItems(new ItemDTO(code, description, qtyOnHand, unitPrice));
                 loadAllItems();
             } catch (SQLException e) {
                 new Alert(Alert.AlertType.ERROR, e.getMessage()).show();

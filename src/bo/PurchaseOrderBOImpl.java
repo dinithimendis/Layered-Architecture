@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PurchaseOrderBOImpl {
+public class PurchaseOrderBOImpl implements PurchaseOrderBO{
 
     CustomerDAO customerDAO = new CustomerDAOImpl();
     ItemDAO itemDAO = new ItemDAOImpl();
